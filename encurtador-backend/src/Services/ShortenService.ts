@@ -6,6 +6,13 @@ import QrCode from 'qrcode';
 
 class ShortenService {
     public async register({ url, shortId }: { url: string, shortId: string | null }) {
+        if (shortId !== null) {
+            const shortIdExist = await prisma.link.findUnique({ where: { shortId: shortId }})
+            if(shortIdExist) {
+                throw new Error("Short ID já existe...");
+            }
+        }
+
         const generateNanoId = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 5)
         const customId = shortId === null ? generateNanoId() : shortId;
 
@@ -24,7 +31,7 @@ class ShortenService {
     public async findByIdentifier(identifier: string) {
         const link = await prisma.link.findUnique({ where: { shortId: identifier } });
         if (!link) {
-            throw new Error("Not found..")
+            throw new Error("Not found...")
         }
 
         return { originalUrl: link.originalUrl }
@@ -32,7 +39,7 @@ class ShortenService {
 
     public async generateQrCode({ url }: { url: string }) {
         const base64 = await QrCode.toDataURL(url);
-        return {base64: base64};
+        return { base64: base64 };
     }
 }
 

@@ -4,7 +4,7 @@ import { shortenService } from "../Services/ShortenService";
 export async function shortenController(app: FastifyInstance) {
     app.post("/shorten", async (request: FastifyRequest, reply: FastifyReply) => {
         try {
-            const body = request.body as { url: string, shortId: string | null}
+            const body = request.body as { url: string, shortId: string | null }
             const identifier = await shortenService.register(body);
             return identifier;
         } catch (error: any) {
@@ -12,7 +12,7 @@ export async function shortenController(app: FastifyInstance) {
         }
     })
 
-    
+
     app.get("/shorten", async (request: FastifyRequest, reply: FastifyReply) => {
         try {
             const query = request.query as { identifier: string }
@@ -22,7 +22,6 @@ export async function shortenController(app: FastifyInstance) {
             return reply.status(404).send({ error: "Not Found" })
         }
     })
-
 
     app.post("/qr-code", async (request: FastifyRequest, reply: FastifyReply) => {
         try {
