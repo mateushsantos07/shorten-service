@@ -100,10 +100,10 @@ describe("Shorten Service Test", () => {
 
     })
 
-    it("Deve verificar se o url passado já existe", async () =>{
+    it("Deve verificar se o shortId passado já existe", async () =>{
         const mockShortId = "https://exemplo.teste.com"
 
-        
+
         await expect(shortenService.findByIdentifier(mockShortId))
             .rejects
             .toThrow('Not found...')
